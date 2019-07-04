@@ -15,12 +15,13 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class HeroService {
+  private heroesUrl = 'api/heroes'; // URL to web api
+
   constructor(
     private messageService: MessageService,
     private http: HttpClient) { }
 
   getHeroes(): Observable<Hero[]> {
-    this.messageService.add('HeroService: fetched heroes');
     return this.http.get<Hero[]>(this.heroesUrl)
       .pipe(
         tap(_ => this.log('fetched heroes')),
@@ -82,8 +83,6 @@ export class HeroService {
       catchError(this.handleError<Hero>('deleteHero'))
     )
   }
-
-  private heroesUrl = 'api/heroes'; // URL to web api
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
